@@ -1,0 +1,7 @@
+Document Title: Test PDF for Extraction
+This is a simple test document.
+The Document Q&A agent will read this PDF, extract the text,
+and use it for further processing.
+Section 1: Introduction
+Section 2: More Content
+End of sample.
