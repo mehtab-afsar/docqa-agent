@@ -1,18 +1,17 @@
-from fastapi import FastAPI, File, UploadFile, Form
+from fastapi import FastAPI, File, UploadFile, Form, Query
 from fastapi.middleware.cors import CORSMiddleware
-import pdfplumber
+from xml.etree import ElementTree
+from typing import Optional
 import os
-import pickle
-from sentence_transformers import SentenceTransformer
+import pdfplumber
+import requests
 import numpy as np
+from sentence_transformers import SentenceTransformer
 
 app = FastAPI()
 
 
 
-import requests
-from fastapi import Query
-from xml.etree import ElementTree
 
 @app.get("/arxiv_search/")
 def arxiv_search(q: str = Query(..., description="Search query for Arxiv"), max_results: int = 5):
@@ -69,7 +68,6 @@ def chunk_text(text, chunk_size=500):
     if current_chunk.strip():
         chunks.append(current_chunk.strip())
     return chunks
-from fastapi import UploadFile, File
 
 @app.post("/upload/")
 async def upload_pdf(file: UploadFile = File(...)):
@@ -94,9 +92,6 @@ async def upload_pdf(file: UploadFile = File(...)):
         "embeddings": embeddings
     }
     return {"message": f"Uploaded {file.filename} with {len(chunks)} chunks."}
-
-from fastapi import Form
-from typing import Optional
 
 @app.post("/ask/")
 async def ask_question(
